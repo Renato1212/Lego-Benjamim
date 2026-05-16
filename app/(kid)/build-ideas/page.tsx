@@ -1,0 +1,221 @@
+'use client';
+
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Lightbulb, RefreshCw, Loader2, Sparkles } from 'lucide-react';
+import { useAppStore } from '@/lib/store/app';
+import IdeaCard from '@/components/buildideas/IdeaCard';
+import { Button } from '@/components/ui/button';
+
+const DIFFICULTIES = ['all', 'easy', 'medium', 'hard'] as const;
+const THEMES = ['all', 'Space', 'Fantasy', 'Ocean', 'City', 'Sci-Fi'] as const;
+
+const DIFF_COLORS: Record<string, string> = {
+  all: '#006DB7',
+  easy: '#4D924A',
+  medium: '#FF6B00',
+  hard: '#D01012',
+};
+
+const THEME_OF_THE_DAY = {
+  theme: 'Space',
+  emoji: '🚀',
+  description: "Today's theme is SPACE! Build something out of this world — rockets, space stations, alien planets, or anything that goes to the stars!",
+  bgColor: '#1A1A2E',
+  accent: '#006DB7',
+};
+
+export default function BuildIdeasPage() {
+  const { buildIdeas } = useAppStore();
+  const [diffFilter, setDiffFilter] = useState<'all' | 'easy' | 'medium' | 'hard'>('all');
+  const [themeFilter, setThemeFilter] = useState<string>('all');
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const filtered = buildIdeas.filter((idea) => {
+    const matchDiff = diffFilter === 'all' || idea.difficulty === diffFilter;
+    const matchTheme = themeFilter === 'all' || idea.theme === themeFilter;
+    return matchDiff && matchTheme;
+  });
+
+  const handleGenerateNew = async () => {
+    setIsGenerating(true);
+    await new Promise((r) => setTimeout(r, 2000));
+    setIsGenerating(false);
+  };
+
+  return (
+    <div className="min-h-screen px-4 py-8 md:px-8 max-w-6xl mx-auto">
+      {/* Page Header */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex items-center justify-between mb-8"
+      >
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-md"
+            style={{ background: '#FFE8D0' }}>
+            <Lightbulb className="w-6 h-6" style={{ color: '#FF6B00' }} />
+          </div>
+          <div>
+            <h1 className="text-4xl font-heading" style={{ color: '#1A1A2E' }}>Build Ideas</h1>
+            <p className="font-body text-gray-500">AI-powered ideas matched to your bricks</p>
+          </div>
+        </div>
+
+        <Button
+          onClick={handleGenerateNew}
+          disabled={isGenerating}
+          variant="secondary"
+          className="hidden sm:flex"
+        >
+          {isGenerating ? (
+            <Loader2 className="w-5 h-5 animate-spin" />
+          ) : (
+            <RefreshCw className="w-5 h-5" />
+          )}
+          Generate New
+        </Button>
+      </motion.div>
+
+      {/* Theme of the Day Banner */}
+      <motion.div
+        initial={{ opacity: 0, scale: 0.95 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.2 }}
+        className="rounded-3xl p-6 mb-8 overflow-hidden relative"
+        style={{ background: `linear-gradient(135deg, ${THEME_OF_THE_DAY.bgColor}, ${THEME_OF_THE_DAY.accent})` }}
+      >
+        <div className="absolute top-3 right-6 text-7xl opacity-20 animate-float select-none">
+          {THEME_OF_THE_DAY.emoji}
+        </div>
+        <div className="relative z-10">
+          <div className="flex items-center gap-2 mb-2">
+            <Sparkles className="w-4 h-4 text-lego-yellow" />
+            <span className="text-xs font-body font-bold uppercase tracking-widest text-lego-yellow opacity-80">
+              Theme of the Day
+            </span>
+          </div>
+          <h2 className="text-3xl font-heading text-white mb-2">
+            {THEME_OF_THE_DAY.emoji} {THEME_OF_THE_DAY.theme}!
+          </h2>
+          <p className="text-white/80 font-body text-sm max-w-lg">
+            {THEME_OF_THE_DAY.description}
+          </p>
+        </div>
+      </motion.div>
+
+      {/* Filters */}
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3 }}
+        className="mb-8 space-y-4"
+      >
+        {/* Difficulty Filter */}
+        <div>
+          <p className="text-sm font-body font-semibold text-gray-400 mb-2 uppercase tracking-wide">Difficulty</p>
+          <div className="flex gap-2 flex-wrap">
+            {DIFFICULTIES.map((diff) => (
+              <motion.button
+                key={diff}
+                onClick={() => setDiffFilter(diff)}
+                className="px-4 py-2 rounded-2xl text-sm font-bold font-body border-2 transition-all capitalize"
+                style={{
+                  backgroundColor: diffFilter === diff ? DIFF_COLORS[diff] : 'white',
+                  color: diffFilter === diff ? 'white' : DIFF_COLORS[diff],
+                  borderColor: DIFF_COLORS[diff] + (diffFilter === diff ? '' : '40'),
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {diff === 'all' ? '✨ All' : diff === 'easy' ? '⭐ Easy' : diff === 'medium' ? '⭐⭐ Medium' : '⭐⭐⭐ Hard'}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+
+        {/* Theme Filter */}
+        <div>
+          <p className="text-sm font-body font-semibold text-gray-400 mb-2 uppercase tracking-wide">Theme</p>
+          <div className="flex gap-2 flex-wrap">
+            {THEMES.map((theme) => (
+              <motion.button
+                key={theme}
+                onClick={() => setThemeFilter(theme)}
+                className="px-4 py-2 rounded-2xl text-sm font-bold font-body border-2 transition-all"
+                style={{
+                  backgroundColor: themeFilter === theme ? '#006DB7' : 'white',
+                  color: themeFilter === theme ? 'white' : '#006DB7',
+                  borderColor: themeFilter === theme ? '#006DB7' : '#006DB720',
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {theme === 'all' ? '🌟 All Themes' : theme}
+              </motion.button>
+            ))}
+          </div>
+        </div>
+      </motion.div>
+
+      {/* Results Count */}
+      <motion.p
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.4 }}
+        className="text-sm font-body text-gray-400 mb-6 font-semibold"
+      >
+        Showing {filtered.length} build {filtered.length === 1 ? 'idea' : 'ideas'}
+        {(diffFilter !== 'all' || themeFilter !== 'all') && ' with current filters'}
+      </motion.p>
+
+      {/* Ideas Grid */}
+      <AnimatePresence mode="wait">
+        {filtered.length > 0 ? (
+          <motion.div
+            key="grid"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+          >
+            {filtered.map((idea, i) => (
+              <IdeaCard key={idea.id} idea={idea} index={i} />
+            ))}
+          </motion.div>
+        ) : (
+          <motion.div
+            key="empty"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="text-center py-20"
+          >
+            <div className="text-8xl mb-4">🤔</div>
+            <h3 className="text-2xl font-heading mb-2" style={{ color: '#1A1A2E' }}>No Ideas Match!</h3>
+            <p className="font-body text-gray-500">Try changing your filters to see more ideas.</p>
+            <Button
+              className="mt-4"
+              onClick={() => { setDiffFilter('all'); setThemeFilter('all'); }}
+            >
+              Clear Filters
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Generate More Button (mobile) */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 0.8 }}
+        className="mt-8 flex justify-center sm:hidden"
+      >
+        <Button onClick={handleGenerateNew} disabled={isGenerating} variant="secondary">
+          {isGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : <RefreshCw className="w-5 h-5" />}
+          Generate More Ideas
+        </Button>
+      </motion.div>
+    </div>
+  );
+}
