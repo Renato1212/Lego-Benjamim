@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { motion } from 'framer-motion';
 import { Send, Sparkles } from 'lucide-react';
 import { useAppStore } from '@/lib/store/app';
@@ -29,8 +29,14 @@ const INITIAL_MESSAGE: Message = {
   timestamp: new Date(),
 };
 
+let msgCounter = 0;
+function genId(prefix: string) {
+  msgCounter += 1;
+  return `${prefix}-${msgCounter}`;
+}
+
 export default function BuddyChat() {
-  const { closeBuddy, user } = useAppStore();
+  const { closeBuddy } = useAppStore();
   const [messages, setMessages] = useState<Message[]>([INITIAL_MESSAGE]);
   const [input, setInput] = useState('');
   const [isTyping, setIsTyping] = useState(false);
@@ -53,7 +59,7 @@ export default function BuddyChat() {
     if (!text.trim()) return;
 
     const userMessage: Message = {
-      id: `user-${Date.now()}`,
+      id: genId('user'),
       role: 'user',
       content: text,
       timestamp: new Date(),
