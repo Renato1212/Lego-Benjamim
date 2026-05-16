@@ -75,12 +75,12 @@ export default function BuddyChat() {
       if (isDemoMode) {
         const delayMs = 1200;
         await new Promise((r) => setTimeout(r, delayMs));
-        const responseIndex = Date.now() % DEMO_BUDDY_RESPONSES.length;
+        const responseIndex = msgCounter % DEMO_BUDDY_RESPONSES.length;
         const response = DEMO_BUDDY_RESPONSES[responseIndex];
         setMessages((prev) => [
           ...prev,
           {
-            id: `buddy-${Date.now()}`,
+            id: genId('buddy'),
             role: 'assistant',
             content: response,
             timestamp: new Date(),
@@ -104,7 +104,7 @@ export default function BuddyChat() {
         setMessages((prev) => [
           ...prev,
           {
-            id: `buddy-${Date.now()}`,
+            id: genId('buddy'),
             role: 'assistant',
             content: data.message,
             timestamp: new Date(),
@@ -115,7 +115,7 @@ export default function BuddyChat() {
       setMessages((prev) => [
         ...prev,
         {
-          id: `buddy-err-${Date.now()}`,
+          id: genId('buddy-err'),
           role: 'assistant',
           content: "Oops! My bricks got mixed up! 🧱 Try asking again - I'm ready to help!",
           timestamp: new Date(),

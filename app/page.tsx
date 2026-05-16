@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import {
@@ -168,11 +168,8 @@ export default function HomePage() {
     initDemoData();
   }, [initDemoData]);
 
-  const stats = React.useMemo(
-    () => getStats(),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [inventory, ownedSets]
-  );
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const stats = useMemo(() => getStats(), [inventory, ownedSets]);
 
   const earnedBadges = badges.filter((b) => b.isEarned);
   const xpPercent = (user.xp / user.xpToNextLevel) * 100;

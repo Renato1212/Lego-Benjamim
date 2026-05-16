@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { motion } from 'framer-motion';
 
 interface Particle {
@@ -39,32 +39,36 @@ const BrickSVG = ({ color, size }: { color: string; size: number }) => (
   </svg>
 );
 
-function generateParticles(count: number): Particle[] {
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    x: Math.random() * 100,
-    y: Math.random() * 100,
-    size: Math.random() * 28 + 16,
-    color: LEGO_COLORS[Math.floor(Math.random() * LEGO_COLORS.length)],
-    duration: Math.random() * 6 + 5,
-    delay: Math.random() * 4,
-    rotation: Math.random() * 360,
-  }));
+// Pre-generate fixed particles at module level (deterministic, SSR-safe placeholder)
+const STATIC_PARTICLES: Particle[] = Array.from({ length: 14 }, (_, i) => ({
+  id: i,
+  x: (i * 7.3) % 100,
+  y: (i * 13.7) % 100,
+  size: 16 + (i * 2) % 28,
+  color: LEGO_COLORS[i % LEGO_COLORS.length],
+  duration: 5 + (i % 6),
+  delay: (i % 4) * 0.5,
+  rotation: (i * 25) % 360,
+}));
+
+// Custom hook using useSyncExternalStore for SSR-safe client detection
+function useIsClient(): boolean {
+  return React.useSyncExternalStore(
+    (cb) => {
+      window.addEventListener('bv-noop', cb);
+      return () => window.removeEventListener('bv-noop', cb);
+    },
+    () => true,
+    () => false,
+  );
 }
 
 export default function BrickParticles() {
-  const [state, setState] = useState<{ particles: Particle[]; mounted: boolean }>({
-    particles: [],
-    mounted: false,
-  });
+  const isClient = useIsClient();
 
-  useEffect(() => {
-    setState({ particles: generateParticles(14), mounted: true });
-  }, []);
+  if (!isClient) return null;
 
-  if (!state.mounted) return null;
-
-  const { particles } = state;
+  const particles = STATIC_PARTICLES;
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">

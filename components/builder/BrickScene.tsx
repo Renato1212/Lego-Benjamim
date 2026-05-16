@@ -90,7 +90,7 @@ interface BrickSceneProps {
   selectedColor?: string;
 }
 
-export default function BrickScene({ selectedColor: _selectedColor = '#D01012' }: BrickSceneProps) {
+export default function BrickScene({ selectedColor: _sc = '#D01012' }: BrickSceneProps) {
   const [placedBricks] = useState<PlacedBrick[]>(DEMO_BRICKS);
   const [selectedBrickId, setSelectedBrickId] = useState<string | null>(null);
 
