@@ -53,15 +53,18 @@ function generateParticles(count: number): Particle[] {
 }
 
 export default function BrickParticles() {
-  const [particles, setParticles] = useState<Particle[]>([]);
-  const [mounted, setMounted] = useState(false);
+  const [state, setState] = useState<{ particles: Particle[]; mounted: boolean }>({
+    particles: [],
+    mounted: false,
+  });
 
   useEffect(() => {
-    setParticles(generateParticles(14));
-    setMounted(true);
+    setState({ particles: generateParticles(14), mounted: true });
   }, []);
 
-  if (!mounted) return null;
+  if (!state.mounted) return null;
+
+  const { particles } = state;
 
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">

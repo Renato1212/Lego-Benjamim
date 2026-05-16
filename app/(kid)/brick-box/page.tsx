@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { motion } from 'framer-motion';
-import { Package, Palette, Layers, Search, SlidersHorizontal } from 'lucide-react';
+import { Package, Layers, Search, SlidersHorizontal } from 'lucide-react';
 import { useBrickBoxStore } from '@/lib/store/brickbox';
 import BrickGrid from '@/components/brickbox/BrickGrid';
 import SetSearch from '@/components/brickbox/SetSearch';
@@ -10,19 +10,14 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 
 export default function BrickBoxPage() {
-  const { initDemoData, getStats, ownedSets } = useBrickBoxStore();
+  const { initDemoData, getStats, ownedSets, inventory } = useBrickBoxStore();
   const [colorFilter, setColorFilter] = useState('');
-  const [stats, setStats] = useState({ totalBricks: 0, totalSets: 0, totalColors: 0, totalCreations: 0 });
 
   useEffect(() => {
     initDemoData();
-    setStats(getStats());
-  }, [initDemoData, getStats]);
+  }, [initDemoData]);
 
-  // Refresh stats whenever ownedSets changes
-  useEffect(() => {
-    setStats(getStats());
-  }, [ownedSets, getStats]);
+  const stats = useMemo(() => getStats(), [ownedSets, inventory, getStats]);
 
   return (
     <div className="min-h-screen px-4 py-8 md:px-8 max-w-6xl mx-auto">

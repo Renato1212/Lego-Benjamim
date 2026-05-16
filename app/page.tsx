@@ -162,14 +162,17 @@ function CreationPreviewCard({
 
 export default function HomePage() {
   const { user, dailyQuest, buildIdeas, creations, badges, completeQuest, openBuddy } = useAppStore();
-  const { initDemoData, getStats } = useBrickBoxStore();
-  const [stats, setStats] = useState({ totalBricks: 847, totalSets: 3, totalColors: 12, totalCreations: 3 });
+  const { initDemoData, inventory, ownedSets, getStats } = useBrickBoxStore();
 
   useEffect(() => {
     initDemoData();
-    const s = getStats();
-    if (s.totalBricks > 0) setStats(s);
-  }, [initDemoData, getStats]);
+  }, [initDemoData]);
+
+  const stats = React.useMemo(
+    () => getStats(),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [inventory, ownedSets]
+  );
 
   const earnedBadges = badges.filter((b) => b.isEarned);
   const xpPercent = (user.xp / user.xpToNextLevel) * 100;

@@ -2,7 +2,7 @@
 
 import React, { useState, Suspense } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Save, Share2, RotateCcw, HelpCircle, X, Cuboid } from 'lucide-react';
+import { Save, Share2, RotateCcw, HelpCircle, Cuboid } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { Button } from '@/components/ui/button';
 import BrickPalette from '@/components/builder/BrickPalette';

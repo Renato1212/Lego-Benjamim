@@ -67,8 +67,10 @@ export default function BuddyChat() {
       const isDemoMode = process.env.NEXT_PUBLIC_DEMO_MODE === 'true';
 
       if (isDemoMode) {
-        await new Promise((r) => setTimeout(r, 1000 + Math.random() * 1000));
-        const response = DEMO_BUDDY_RESPONSES[Math.floor(Math.random() * DEMO_BUDDY_RESPONSES.length)];
+        const delayMs = 1200;
+        await new Promise((r) => setTimeout(r, delayMs));
+        const responseIndex = Date.now() % DEMO_BUDDY_RESPONSES.length;
+        const response = DEMO_BUDDY_RESPONSES[responseIndex];
         setMessages((prev) => [
           ...prev,
           {

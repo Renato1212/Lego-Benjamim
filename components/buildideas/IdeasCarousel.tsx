@@ -1,7 +1,6 @@
 'use client';
 
 import React, { useRef } from 'react';
-import { motion } from 'framer-motion';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import type { BuildIdea } from '@/lib/store/app';
 import IdeaCard from './IdeaCard';

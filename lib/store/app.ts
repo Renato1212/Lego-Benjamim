@@ -275,7 +275,7 @@ const DEMO_BUILD_IDEAS: BuildIdea[] = [
 
 export const useAppStore = create<AppState>()(
   persist(
-    (set, get) => ({
+    (set, _get) => ({
       user: DEMO_USER,
       badges: DEMO_BADGES,
       dailyQuest: DEMO_QUEST,

@@ -9,7 +9,7 @@ import {
   Package,
   Lightbulb,
   Cuboid,
-  Image,
+  ImageIcon,
   Star,
   Users,
   Menu,
@@ -58,7 +58,7 @@ const navItems: NavItem[] = [
   {
     href: '/gallery',
     label: 'Gallery',
-    icon: <Image className="w-5 h-5" />,
+    icon: <ImageIcon className="w-5 h-5" />,
     color: '#7B2D8B',
     bgColor: 'bg-purple-50',
   },

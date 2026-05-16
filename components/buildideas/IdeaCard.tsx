@@ -4,7 +4,6 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { Clock, Zap, Target, ChevronRight } from 'lucide-react';
 import type { BuildIdea } from '@/lib/store/app';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 
@@ -31,7 +30,7 @@ interface IdeaCardProps {
   onExpand?: () => void;
 }
 
-export default function IdeaCard({ idea, index, isExpanded, onExpand }: IdeaCardProps) {
+export default function IdeaCard({ idea, index, onExpand }: IdeaCardProps) {
   const diffConf = DIFF_CONFIG[idea.difficulty] || DIFF_CONFIG.easy;
   const stars = '⭐'.repeat(diffConf.stars);
 

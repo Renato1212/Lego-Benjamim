@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Sparkles, Loader2, RefreshCw } from 'lucide-react';
-import { Button } from '@/components/ui/button';
 
 interface StoryDisplayProps {
   story: string;
@@ -13,7 +12,7 @@ interface StoryDisplayProps {
 
 export default function StoryDisplay({ story, creationName, onRegenerate }: StoryDisplayProps) {
   const [isRegenerating, setIsRegenerating] = useState(false);
-  const [currentStory, setCurrentStory] = useState(story);
+  const [currentStory] = useState(story);
 
   const handleRegenerate = async () => {
     if (!onRegenerate) return;

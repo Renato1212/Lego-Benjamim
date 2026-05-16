@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Image, Plus, SortAsc, Grid3X3, List } from 'lucide-react';
+import { ImageIcon, Plus, SortAsc, Grid3X3, List } from 'lucide-react';
 import Link from 'next/link';
 import { useAppStore } from '@/lib/store/app';
 import CreationCard from '@/components/gallery/CreationCard';
@@ -34,7 +34,7 @@ export default function GalleryPage() {
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-md"
             style={{ background: '#EED6FF' }}>
-            <Image className="w-6 h-6" style={{ color: '#7B2D8B' }} />
+            <ImageIcon className="w-6 h-6" style={{ color: '#7B2D8B' }} />
           </div>
           <div>
             <h1 className="text-4xl font-heading" style={{ color: '#1A1A2E' }}>My Universe</h1>
