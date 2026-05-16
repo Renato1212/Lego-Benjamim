@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
-import { Fredoka_One, Nunito } from 'next/font/google';
+import { Fredoka, Nunito } from 'next/font/google';
 import './globals.css';
 import KidNav from '@/components/layout/KidNav';
 import BrickParticles from '@/components/layout/BrickParticles';
 import BuddyButton from '@/components/brickbuddy/BuddyButton';
 
-const fredokaOne = Fredoka_One({
-  weight: '400',
+const fredoka = Fredoka({
   subsets: ['latin'],
   variable: '--font-fredoka',
+  weight: ['300', '400', '500', '600', '700'],
   display: 'swap',
 });
 
@@ -33,7 +33,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${fredokaOne.variable} ${nunito.variable} h-full`}
+      className={`${fredoka.variable} ${nunito.variable} h-full`}
     >
       <body className="min-h-full bg-lego-cream font-body antialiased">
         {/* Background brick particles */}

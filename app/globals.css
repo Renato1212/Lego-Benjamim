@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Nunito:wght@400;500;600;700;800;900&display=swap');
 
 :root {
   --lego-yellow: #FFCC00;
@@ -36,8 +35,8 @@
   --color-lego-purple: var(--lego-purple);
   --color-lego-cream: var(--lego-cream);
   --color-lego-dark: var(--lego-dark);
-  --font-heading: 'Fredoka One', cursive;
-  --font-body: 'Nunito', sans-serif;
+  --font-heading: var(--font-fredoka), 'Fredoka', cursive;
+  --font-body: var(--font-nunito), 'Nunito', sans-serif;
 }
 
 * {
@@ -45,20 +44,20 @@
 }
 
 html {
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-nunito), 'Nunito', sans-serif;
   scroll-behavior: smooth;
 }
 
 body {
   background: var(--lego-cream);
   color: var(--lego-dark);
-  font-family: 'Nunito', sans-serif;
+  font-family: var(--font-nunito), 'Nunito', sans-serif;
   overflow-x: hidden;
   min-height: 100vh;
 }
 
 h1, h2, h3, h4, h5, h6 {
-  font-family: 'Fredoka One', cursive;
+  font-family: var(--font-fredoka), 'Fredoka', cursive;
   letter-spacing: 0.01em;
 }
 
