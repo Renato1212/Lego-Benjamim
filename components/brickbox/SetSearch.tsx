@@ -106,7 +106,7 @@ export default function SetSearch() {
       addedAt: new Date().toISOString(),
     };
 
-    // Simulate a delay for "loading bricks"
+    // Simular um atraso para "carregar peças"
     await new Promise((r) => setTimeout(r, 800));
     addSet(newSet);
     setAddingSet(null);
@@ -131,7 +131,7 @@ export default function SetSearch() {
             value={query}
             onChange={(e) => setQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            placeholder="Search LEGO sets (e.g. 'space', 'city', set number...)"
+            placeholder="Buscar conjuntos LEGO (ex: 'espaço', 'cidade', número do conjunto...)"
             className="pl-12 h-12 rounded-2xl text-base"
           />
         </div>
@@ -139,14 +139,15 @@ export default function SetSearch() {
           onClick={handleSearch}
           disabled={isSearching || !query.trim()}
           size="lg"
-          className="px-6"
+          className="px-5 h-12 flex-shrink-0"
+          aria-label="Buscar"
         >
           {isSearching ? (
             <Loader2 className="w-5 h-5 animate-spin" />
           ) : (
             <>
               <Search className="w-5 h-5" />
-              Search
+              <span className="hidden sm:inline">Buscar</span>
             </>
           )}
         </Button>
@@ -163,7 +164,7 @@ export default function SetSearch() {
           >
             <div className="p-4 border-b border-gray-100">
               <p className="font-body text-sm text-gray-500 font-semibold">
-                Found {results.length} sets
+                Encontrado {results.length} {results.length === 1 ? 'conjunto' : 'conjuntos'}
               </p>
             </div>
             <div className="divide-y divide-gray-50">
@@ -180,19 +181,19 @@ export default function SetSearch() {
                     className="flex items-center gap-4 p-4 hover:bg-gray-50 transition-colors"
                   >
                     {/* Set thumbnail */}
-                    <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0"
+                    <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0"
                       style={{ background: '#FFF8E7' }}>
                       {THEME_EMOJIS[result.theme || 'Other'] || '🧱'}
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <p className="font-heading text-lego-dark text-base leading-tight">{result.name}</p>
-                      <div className="flex items-center gap-2 mt-1">
+                      <p className="font-heading text-lego-dark text-base leading-tight truncate">{result.name}</p>
+                      <div className="flex items-center gap-2 mt-1 flex-wrap">
                         <span className="text-xs font-body text-gray-400">{result.setNum}</span>
                         <span className="text-xs text-gray-300">·</span>
                         <span className="text-xs font-body text-gray-400">{result.year}</span>
                         <span className="text-xs text-gray-300">·</span>
-                        <span className="text-xs font-body font-bold text-lego-blue">{result.numParts} pieces</span>
+                        <span className="text-xs font-body font-bold text-lego-blue">{result.numParts} peças</span>
                       </div>
                       {result.theme && (
                         <span className="inline-block mt-1 text-xs px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 font-body font-semibold">
@@ -204,7 +205,7 @@ export default function SetSearch() {
                     {owned ? (
                       <div className="flex items-center gap-1.5 text-lego-green font-bold text-sm font-body flex-shrink-0">
                         <CheckCircle className="w-5 h-5" />
-                        Owned!
+                        <span className="hidden sm:inline">Tenho!</span>
                       </div>
                     ) : (
                       <Button
@@ -212,14 +213,15 @@ export default function SetSearch() {
                         disabled={adding}
                         size="sm"
                         variant="secondary"
-                        className="flex-shrink-0"
+                        className="flex-shrink-0 h-10"
+                        aria-label={`Adicionar ${result.name}`}
                       >
                         {adding ? (
                           <Loader2 className="w-4 h-4 animate-spin" />
                         ) : (
                           <>
                             <Plus className="w-4 h-4" />
-                            Add Set
+                            <span className="hidden sm:inline">Adicionar</span>
                           </>
                         )}
                       </Button>
@@ -239,7 +241,7 @@ export default function SetSearch() {
           className="text-center py-8 text-gray-400"
         >
           <p className="text-4xl mb-2">🔍</p>
-          <p className="font-body">No sets found. Try a different search!</p>
+          <p className="font-body">Nenhum conjunto encontrado. Tente outra busca!</p>
         </motion.div>
       )}
     </div>

@@ -9,20 +9,20 @@ import { Input } from '@/components/ui/input';
 import { Progress } from '@/components/ui/progress';
 
 const USAGE_DATA = [
-  { day: 'Mon', minutes: 25 },
-  { day: 'Tue', minutes: 40 },
-  { day: 'Wed', minutes: 15 },
-  { day: 'Thu', minutes: 35 },
-  { day: 'Fri', minutes: 55 },
-  { day: 'Sat', minutes: 70 },
-  { day: 'Sun', minutes: 45 },
+  { day: 'Seg', minutes: 25 },
+  { day: 'Ter', minutes: 40 },
+  { day: 'Qua', minutes: 15 },
+  { day: 'Qui', minutes: 35 },
+  { day: 'Sex', minutes: 55 },
+  { day: 'Sáb', minutes: 70 },
+  { day: 'Dom', minutes: 45 },
 ];
 
 const FEATURE_TOGGLES = [
-  { id: 'story', label: 'AI Story Mode', description: 'Generate stories for creations', enabled: true, icon: '📖' },
-  { id: 'buddy', label: 'Brick Buddy Chat', description: 'AI chat assistant for kids', enabled: true, icon: '🤖' },
-  { id: 'share', label: 'Gallery Sharing', description: 'Share creations publicly', enabled: false, icon: '🌐' },
-  { id: 'ideas', label: 'Build Ideas Generator', description: 'AI-powered build suggestions', enabled: true, icon: '💡' },
+  { id: 'story', label: 'Modo de História com IA', description: 'Gerar histórias para criações', enabled: true, icon: '📖' },
+  { id: 'buddy', label: 'Chat Amigo Construtor', description: 'Assistente de chat com IA para crianças', enabled: true, icon: '🤖' },
+  { id: 'share', label: 'Compartilhamento na Galeria', description: 'Compartilhar criações publicamente', enabled: false, icon: '🌐' },
+  { id: 'ideas', label: 'Gerador de Ideias de Construção', description: 'Sugestões de construção com IA', enabled: true, icon: '💡' },
 ];
 
 function PinEntry({ onSuccess }: { onSuccess: () => void }) {
@@ -59,9 +59,9 @@ function PinEntry({ onSuccess }: { onSuccess: () => void }) {
           🔒
         </motion.div>
 
-        <h1 className="text-3xl font-heading mb-2" style={{ color: '#1A1A2E' }}>Parent Zone</h1>
+        <h1 className="text-3xl font-heading mb-2" style={{ color: '#1A1A2E' }}>Área dos Pais</h1>
         <p className="font-body text-gray-500 text-sm mb-6">
-          Enter your 4-digit PIN to access the parent dashboard
+          Digite seu PIN de 4 dígitos para acessar o painel dos pais
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -79,6 +79,7 @@ function PinEntry({ onSuccess }: { onSuccess: () => void }) {
               onClick={() => setShowPin(!showPin)}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
               tabIndex={-1}
+              aria-label={showPin ? 'Ocultar PIN' : 'Mostrar PIN'}
             >
               {showPin ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
             </button>
@@ -91,18 +92,18 @@ function PinEntry({ onSuccess }: { onSuccess: () => void }) {
               className="text-sm font-body font-bold"
               style={{ color: '#D01012' }}
             >
-              ❌ Wrong PIN. Try again!
+              ❌ PIN incorreto. Tente novamente!
             </motion.p>
           )}
 
-          <Button type="submit" className="w-full" size="lg" disabled={pin.length !== 4}>
+          <Button type="submit" className="w-full h-12" size="lg" disabled={pin.length !== 4}>
             <Shield className="w-5 h-5" />
-            Enter Parent Zone
+            Entrar na Área dos Pais
           </Button>
         </form>
 
         <p className="text-xs font-body text-gray-300 mt-4">
-          Demo PIN: 1234
+          PIN de demonstração: 1234
         </p>
       </motion.div>
     </div>
@@ -125,12 +126,12 @@ function ParentDashboard() {
   const xpPercent = (user.xp / user.xpToNextLevel) * 100;
 
   return (
-    <div className="min-h-screen px-4 py-8 md:px-8 max-w-5xl mx-auto">
+    <div className="min-h-screen px-4 sm:px-6 py-6 max-w-5xl mx-auto">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between mb-8"
+        className="flex items-center justify-between mb-6"
       >
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-md"
@@ -138,14 +139,14 @@ function ParentDashboard() {
             <Users className="w-6 h-6 text-white" />
           </div>
           <div>
-            <h1 className="text-3xl font-heading" style={{ color: '#1A1A2E' }}>Parent Dashboard</h1>
-            <p className="font-body text-gray-500 text-sm">Monitoring {user.name}&apos;s LEGO adventure</p>
+            <h1 className="text-2xl sm:text-3xl font-heading" style={{ color: '#1A1A2E' }}>Painel dos Pais</h1>
+            <p className="font-body text-gray-500 text-sm">Monitorando a aventura LEGO de {user.name}</p>
           </div>
         </div>
 
         <div className="flex items-center gap-2">
           <Shield className="w-4 h-4" style={{ color: '#4D924A' }} />
-          <span className="text-xs font-body font-bold" style={{ color: '#4D924A' }}>Parent Mode Active</span>
+          <span className="text-xs font-body font-bold hidden sm:inline" style={{ color: '#4D924A' }}>Modo Pais Ativo</span>
         </div>
       </motion.div>
 
@@ -154,23 +155,23 @@ function ParentDashboard() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.1 }}
-        className="bg-white rounded-3xl p-6 mb-6 shadow-lg border-2 border-white/80"
+        className="bg-white rounded-3xl p-5 mb-5 shadow-lg border-2 border-white/80"
       >
-        <h2 className="text-lg font-heading mb-4" style={{ color: '#1A1A2E' }}>👤 Kid Profile</h2>
-        <div className="flex items-center gap-6 flex-wrap">
+        <h2 className="text-lg font-heading mb-4" style={{ color: '#1A1A2E' }}>👤 Perfil da Criança</h2>
+        <div className="flex items-center gap-4 flex-wrap">
           <div
-            className="w-20 h-20 rounded-3xl flex items-center justify-center text-4xl shadow-md"
+            className="w-16 h-16 sm:w-20 sm:h-20 rounded-3xl flex items-center justify-center text-3xl sm:text-4xl shadow-md"
             style={{ background: 'linear-gradient(135deg, #FFCC00, #FF6B00)' }}
           >
             {user.avatar}
           </div>
           <div className="flex-1">
-            <h3 className="text-2xl font-heading" style={{ color: '#1A1A2E' }}>{user.name}</h3>
-            <p className="font-body text-gray-500">Level {user.level} {user.levelName}</p>
+            <h3 className="text-xl sm:text-2xl font-heading" style={{ color: '#1A1A2E' }}>{user.name}</h3>
+            <p className="font-body text-gray-500">Nível {user.level} — {user.levelName}</p>
 
             <div className="mt-2 max-w-xs">
               <div className="flex justify-between text-xs font-body text-gray-400 mb-1">
-                <span>XP Progress</span>
+                <span>Progresso de XP</span>
                 <span>{user.xp.toLocaleString()} / {user.xpToNextLevel.toLocaleString()}</span>
               </div>
               <Progress value={xpPercent} color="#FFCC00" className="h-2" />
@@ -179,11 +180,11 @@ function ParentDashboard() {
             <div className="flex gap-4 mt-3 flex-wrap">
               <div className="text-sm font-body">
                 <span className="font-bold" style={{ color: '#7B2D8B' }}>{creations.length}</span>
-                <span className="text-gray-400 ml-1">creations</span>
+                <span className="text-gray-400 ml-1">criações</span>
               </div>
               <div className="text-sm font-body">
                 <span className="font-bold" style={{ color: '#4D924A' }}>{earnedBadges.length}</span>
-                <span className="text-gray-400 ml-1">badges earned</span>
+                <span className="text-gray-400 ml-1">conquistas</span>
               </div>
               <div className="text-sm font-body">
                 <span className="font-bold" style={{ color: '#FF6B00' }}>{user.xp.toLocaleString()}</span>
@@ -195,23 +196,23 @@ function ParentDashboard() {
       </motion.div>
 
       {/* Stats Grid */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 mb-5">
         {[
-          { label: 'This Week', value: `${Math.floor(totalMinutes / 60)}h ${totalMinutes % 60}m`, icon: '⏰', color: '#006DB7' },
-          { label: 'Avg/Day', value: `${Math.floor(totalMinutes / 7)}m`, icon: '📊', color: '#4D924A' },
-          { label: 'Creations', value: String(creations.length), icon: '🏗️', color: '#7B2D8B' },
-          { label: 'Badges Earned', value: String(earnedBadges.length), icon: '🏆', color: '#FF6B00' },
+          { label: 'Esta Semana', value: `${Math.floor(totalMinutes / 60)}h ${totalMinutes % 60}m`, icon: '⏰', color: '#006DB7' },
+          { label: 'Média/Dia', value: `${Math.floor(totalMinutes / 7)}m`, icon: '📊', color: '#4D924A' },
+          { label: 'Criações', value: String(creations.length), icon: '🏗️', color: '#7B2D8B' },
+          { label: 'Conquistas', value: String(earnedBadges.length), icon: '🏆', color: '#FF6B00' },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 + i * 0.08 }}
-            className="bg-white rounded-2xl p-4 shadow-md border-2 border-white text-center"
+            className="bg-white rounded-2xl p-3 sm:p-4 shadow-md border-2 border-white text-center"
             style={{ borderColor: `${stat.color}20` }}
           >
             <div className="text-2xl mb-1">{stat.icon}</div>
-            <div className="text-xl font-heading" style={{ color: stat.color }}>{stat.value}</div>
+            <div className="text-lg sm:text-xl font-heading" style={{ color: stat.color }}>{stat.value}</div>
             <div className="text-xs font-body text-gray-400 font-semibold">{stat.label}</div>
           </motion.div>
         ))}
@@ -222,14 +223,14 @@ function ParentDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="bg-white rounded-3xl p-6 mb-6 shadow-lg border-2 border-white/80"
+        className="bg-white rounded-3xl p-5 mb-5 shadow-lg border-2 border-white/80"
       >
         <div className="flex items-center gap-2 mb-6">
           <BarChart3 className="w-5 h-5" style={{ color: '#006DB7' }} />
-          <h2 className="text-lg font-heading" style={{ color: '#1A1A2E' }}>Weekly Screen Time</h2>
+          <h2 className="text-lg font-heading" style={{ color: '#1A1A2E' }}>Tempo de Tela Semanal</h2>
           <span className="ml-auto text-sm font-body text-gray-400">{totalMinutes} min total</span>
         </div>
-        <div className="flex items-end justify-between gap-2 h-32">
+        <div className="flex items-end justify-between gap-1 sm:gap-2 h-32">
           {USAGE_DATA.map((day, i) => (
             <div key={day.day} className="flex-1 flex flex-col items-center gap-2">
               <motion.div
@@ -247,7 +248,7 @@ function ParentDashboard() {
           ))}
         </div>
         <p className="text-xs font-body text-gray-400 mt-3">
-          🟠 = Over 60 min per day
+          🟠 = Mais de 60 min por dia
         </p>
       </motion.div>
 
@@ -256,9 +257,9 @@ function ParentDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4 }}
-        className="bg-white rounded-3xl p-6 mb-6 shadow-lg border-2 border-white/80"
+        className="bg-white rounded-3xl p-5 mb-5 shadow-lg border-2 border-white/80"
       >
-        <h2 className="text-lg font-heading mb-4" style={{ color: '#1A1A2E' }}>🏗️ Recent Creations</h2>
+        <h2 className="text-lg font-heading mb-4" style={{ color: '#1A1A2E' }}>🏗️ Criações Recentes</h2>
         <div className="space-y-3">
           {creations.map((creation, i) => (
             <motion.div
@@ -273,13 +274,13 @@ function ParentDashboard() {
                 style={{ background: '#EED6FF' }}>
                 {['🚀', '🏰', '🌈'][i % 3]}
               </div>
-              <div className="flex-1">
-                <p className="font-heading text-sm" style={{ color: '#1A1A2E' }}>{creation.name}</p>
+              <div className="flex-1 min-w-0">
+                <p className="font-heading text-sm truncate" style={{ color: '#1A1A2E' }}>{creation.name}</p>
                 <p className="font-body text-xs text-gray-400">
-                  {creation.bricksUsed} bricks · {new Date(creation.createdAt).toLocaleDateString()}
+                  {creation.bricksUsed} peças · {new Date(creation.createdAt).toLocaleDateString('pt-BR')}
                 </p>
               </div>
-              <span className="text-xs font-body font-bold" style={{ color: '#D01012' }}>
+              <span className="text-xs font-body font-bold flex-shrink-0" style={{ color: '#D01012' }}>
                 ❤️ {creation.likes}
               </span>
             </motion.div>
@@ -292,11 +293,11 @@ function ParentDashboard() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.5 }}
-        className="bg-white rounded-3xl p-6 shadow-lg border-2 border-white/80"
+        className="bg-white rounded-3xl p-5 shadow-lg border-2 border-white/80"
       >
         <div className="flex items-center gap-2 mb-4">
           <Settings className="w-5 h-5" style={{ color: '#1A1A2E' }} />
-          <h2 className="text-lg font-heading" style={{ color: '#1A1A2E' }}>Feature Controls</h2>
+          <h2 className="text-lg font-heading" style={{ color: '#1A1A2E' }}>Configurações</h2>
         </div>
         <div className="space-y-3">
           {features.map((feature, i) => (
@@ -320,7 +321,7 @@ function ParentDashboard() {
                 className="w-12 h-6 rounded-full relative transition-colors flex-shrink-0"
                 style={{ backgroundColor: feature.enabled ? '#4D924A' : '#D0D0D0' }}
                 whileTap={{ scale: 0.9 }}
-                aria-label={`Toggle ${feature.label}`}
+                aria-label={`${feature.enabled ? 'Desativar' : 'Ativar'} ${feature.label}`}
               >
                 <motion.div
                   className="absolute top-1 w-4 h-4 rounded-full bg-white shadow-sm"

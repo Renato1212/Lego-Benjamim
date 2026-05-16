@@ -8,7 +8,8 @@ import IdeaCard from '@/components/buildideas/IdeaCard';
 import { Button } from '@/components/ui/button';
 
 const DIFFICULTIES = ['all', 'easy', 'medium', 'hard'] as const;
-const THEMES = ['all', 'Space', 'Fantasy', 'Ocean', 'City', 'Sci-Fi'] as const;
+const THEMES = ['all', 'Espaço', 'Fantasia', 'Oceano', 'Cidade', 'Ficção Científica'] as const;
+const LEGACY_THEMES = ['Space', 'Fantasy', 'Ocean', 'City', 'Sci-Fi'] as const;
 
 const DIFF_COLORS: Record<string, string> = {
   all: '#006DB7',
@@ -17,10 +18,25 @@ const DIFF_COLORS: Record<string, string> = {
   hard: '#D01012',
 };
 
+const DIFF_LABELS: Record<string, string> = {
+  all: '✨ Todos',
+  easy: '⭐ Fácil',
+  medium: '⭐⭐ Médio',
+  hard: '⭐⭐⭐ Difícil',
+};
+
+const THEME_MAP: Record<string, string> = {
+  'Espaço': 'Space',
+  'Fantasia': 'Fantasy',
+  'Oceano': 'Ocean',
+  'Cidade': 'City',
+  'Ficção Científica': 'Sci-Fi',
+};
+
 const THEME_OF_THE_DAY = {
-  theme: 'Space',
+  theme: 'Espaço',
   emoji: '🚀',
-  description: "Today's theme is SPACE! Build something out of this world — rockets, space stations, alien planets, or anything that goes to the stars!",
+  description: 'O tema de hoje é ESPAÇO! Construa algo fora deste mundo — foguetes, estações espaciais, planetas alienígenas ou qualquer coisa que vá até as estrelas!',
   bgColor: '#1A1A2E',
   accent: '#006DB7',
 };
@@ -33,7 +49,12 @@ export default function BuildIdeasPage() {
 
   const filtered = buildIdeas.filter((idea) => {
     const matchDiff = diffFilter === 'all' || idea.difficulty === diffFilter;
-    const matchTheme = themeFilter === 'all' || idea.theme === themeFilter;
+    // Support both Portuguese and English theme names
+    const matchTheme = themeFilter === 'all' ||
+      idea.theme === themeFilter ||
+      idea.theme === THEME_MAP[themeFilter] ||
+      Object.entries(THEME_MAP).some(([pt, en]) => idea.theme === en && themeFilter === pt) ||
+      idea.theme === themeFilter;
     return matchDiff && matchTheme;
   });
 
@@ -44,12 +65,12 @@ export default function BuildIdeasPage() {
   };
 
   return (
-    <div className="min-h-screen px-4 py-8 md:px-8 max-w-6xl mx-auto">
+    <div className="min-h-screen px-4 sm:px-6 py-6 max-w-6xl mx-auto">
       {/* Page Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center justify-between mb-8"
+        className="flex items-center justify-between mb-6"
       >
         <div className="flex items-center gap-3">
           <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-md"
@@ -57,8 +78,8 @@ export default function BuildIdeasPage() {
             <Lightbulb className="w-6 h-6" style={{ color: '#FF6B00' }} />
           </div>
           <div>
-            <h1 className="text-4xl font-heading" style={{ color: '#1A1A2E' }}>Build Ideas</h1>
-            <p className="font-body text-gray-500">AI-powered ideas matched to your bricks</p>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading" style={{ color: '#1A1A2E' }}>Ideias de Construção</h1>
+            <p className="font-body text-gray-500 text-sm">Ideias com IA combinadas às suas peças</p>
           </div>
         </div>
 
@@ -66,14 +87,14 @@ export default function BuildIdeasPage() {
           onClick={handleGenerateNew}
           disabled={isGenerating}
           variant="secondary"
-          className="hidden sm:flex"
+          className="hidden sm:flex h-11"
         >
           {isGenerating ? (
             <Loader2 className="w-5 h-5 animate-spin" />
           ) : (
             <RefreshCw className="w-5 h-5" />
           )}
-          Generate New
+          Gerar Novas
         </Button>
       </motion.div>
 
@@ -82,20 +103,20 @@ export default function BuildIdeasPage() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.2 }}
-        className="rounded-3xl p-6 mb-8 overflow-hidden relative"
+        className="rounded-3xl p-5 mb-6 overflow-hidden relative"
         style={{ background: `linear-gradient(135deg, ${THEME_OF_THE_DAY.bgColor}, ${THEME_OF_THE_DAY.accent})` }}
       >
-        <div className="absolute top-3 right-6 text-7xl opacity-20 animate-float select-none">
+        <div className="absolute top-3 right-6 text-6xl opacity-20 animate-float select-none">
           {THEME_OF_THE_DAY.emoji}
         </div>
         <div className="relative z-10">
           <div className="flex items-center gap-2 mb-2">
             <Sparkles className="w-4 h-4 text-lego-yellow" />
             <span className="text-xs font-body font-bold uppercase tracking-widest text-lego-yellow opacity-80">
-              Theme of the Day
+              Tema do Dia
             </span>
           </div>
-          <h2 className="text-3xl font-heading text-white mb-2">
+          <h2 className="text-2xl sm:text-3xl font-heading text-white mb-2">
             {THEME_OF_THE_DAY.emoji} {THEME_OF_THE_DAY.theme}!
           </h2>
           <p className="text-white/80 font-body text-sm max-w-lg">
@@ -109,17 +130,17 @@ export default function BuildIdeasPage() {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3 }}
-        className="mb-8 space-y-4"
+        className="mb-6 space-y-4"
       >
         {/* Difficulty Filter */}
         <div>
-          <p className="text-sm font-body font-semibold text-gray-400 mb-2 uppercase tracking-wide">Difficulty</p>
-          <div className="flex gap-2 flex-wrap">
+          <p className="text-sm font-body font-semibold text-gray-400 mb-2 uppercase tracking-wide">Dificuldade</p>
+          <div className="-mx-4 px-4 flex gap-2 overflow-x-auto pb-1 snap-x">
             {DIFFICULTIES.map((diff) => (
               <motion.button
                 key={diff}
                 onClick={() => setDiffFilter(diff)}
-                className="px-4 py-2 rounded-2xl text-sm font-bold font-body border-2 transition-all capitalize"
+                className="flex-shrink-0 px-4 py-2 rounded-2xl text-sm font-bold font-body border-2 transition-all h-11 snap-start"
                 style={{
                   backgroundColor: diffFilter === diff ? DIFF_COLORS[diff] : 'white',
                   color: diffFilter === diff ? 'white' : DIFF_COLORS[diff],
@@ -128,7 +149,7 @@ export default function BuildIdeasPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {diff === 'all' ? '✨ All' : diff === 'easy' ? '⭐ Easy' : diff === 'medium' ? '⭐⭐ Medium' : '⭐⭐⭐ Hard'}
+                {DIFF_LABELS[diff]}
               </motion.button>
             ))}
           </div>
@@ -136,13 +157,13 @@ export default function BuildIdeasPage() {
 
         {/* Theme Filter */}
         <div>
-          <p className="text-sm font-body font-semibold text-gray-400 mb-2 uppercase tracking-wide">Theme</p>
-          <div className="flex gap-2 flex-wrap">
+          <p className="text-sm font-body font-semibold text-gray-400 mb-2 uppercase tracking-wide">Tema</p>
+          <div className="-mx-4 px-4 flex gap-2 overflow-x-auto pb-1 snap-x">
             {THEMES.map((theme) => (
               <motion.button
                 key={theme}
                 onClick={() => setThemeFilter(theme)}
-                className="px-4 py-2 rounded-2xl text-sm font-bold font-body border-2 transition-all"
+                className="flex-shrink-0 px-4 py-2 rounded-2xl text-sm font-bold font-body border-2 transition-all h-11 snap-start"
                 style={{
                   backgroundColor: themeFilter === theme ? '#006DB7' : 'white',
                   color: themeFilter === theme ? 'white' : '#006DB7',
@@ -151,7 +172,7 @@ export default function BuildIdeasPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {theme === 'all' ? '🌟 All Themes' : theme}
+                {theme === 'all' ? '🌟 Todos os Temas' : theme}
               </motion.button>
             ))}
           </div>
@@ -163,10 +184,10 @@ export default function BuildIdeasPage() {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.4 }}
-        className="text-sm font-body text-gray-400 mb-6 font-semibold"
+        className="text-sm font-body text-gray-400 mb-5 font-semibold"
       >
-        Showing {filtered.length} build {filtered.length === 1 ? 'idea' : 'ideas'}
-        {(diffFilter !== 'all' || themeFilter !== 'all') && ' with current filters'}
+        Mostrando {filtered.length} {filtered.length === 1 ? 'ideia' : 'ideias'}
+        {(diffFilter !== 'all' || themeFilter !== 'all') && ' com os filtros atuais'}
       </motion.p>
 
       {/* Ideas Grid */}
@@ -177,7 +198,7 @@ export default function BuildIdeasPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"
+            className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5"
           >
             {filtered.map((idea, i) => (
               <IdeaCard key={idea.id} idea={idea} index={i} />
@@ -192,13 +213,13 @@ export default function BuildIdeasPage() {
             className="text-center py-20"
           >
             <div className="text-8xl mb-4">🤔</div>
-            <h3 className="text-2xl font-heading mb-2" style={{ color: '#1A1A2E' }}>No Ideas Match!</h3>
-            <p className="font-body text-gray-500">Try changing your filters to see more ideas.</p>
+            <h3 className="text-2xl font-heading mb-2" style={{ color: '#1A1A2E' }}>Nenhuma Ideia Encontrada!</h3>
+            <p className="font-body text-gray-500">Tente mudar os filtros para ver mais ideias.</p>
             <Button
               className="mt-4"
               onClick={() => { setDiffFilter('all'); setThemeFilter('all'); }}
             >
-              Clear Filters
+              Limpar Filtros
             </Button>
           </motion.div>
         )}
@@ -211,9 +232,9 @@ export default function BuildIdeasPage() {
         transition={{ delay: 0.8 }}
         className="mt-8 flex justify-center sm:hidden"
       >
-        <Button onClick={handleGenerateNew} disabled={isGenerating} variant="secondary">
+        <Button onClick={handleGenerateNew} disabled={isGenerating} variant="secondary" className="h-12">
           {isGenerating ? <Loader2 className="w-5 h-5 animate-spin" /> : <RefreshCw className="w-5 h-5" />}
-          Generate More Ideas
+          Gerar Mais Ideias
         </Button>
       </motion.div>
     </div>

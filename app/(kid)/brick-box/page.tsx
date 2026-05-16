@@ -20,12 +20,12 @@ export default function BrickBoxPage() {
   const stats = useMemo(() => getStats(), [ownedSets, inventory, getStats]);
 
   return (
-    <div className="min-h-screen px-4 py-8 md:px-8 max-w-6xl mx-auto">
+    <div className="min-h-screen px-4 sm:px-6 py-6 max-w-6xl mx-auto">
       {/* Page Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="mb-8"
+        className="mb-6"
       >
         <div className="flex items-center gap-3 mb-2">
           <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-md"
@@ -33,29 +33,29 @@ export default function BrickBoxPage() {
             <Package className="w-6 h-6" style={{ color: '#D01012' }} />
           </div>
           <div>
-            <h1 className="text-4xl font-heading" style={{ color: '#1A1A2E' }}>My Brick Box</h1>
-            <p className="font-body text-gray-500">Your complete LEGO collection in one place</p>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading" style={{ color: '#1A1A2E' }}>Minha Caixinha de Peças</h1>
+            <p className="font-body text-gray-500 text-sm">Sua coleção LEGO completa em um só lugar</p>
           </div>
         </div>
       </motion.div>
 
       {/* Stats Row */}
-      <div className="grid grid-cols-3 gap-4 mb-8">
+      <div className="grid grid-cols-3 gap-3 mb-6">
         {[
-          { icon: '🧱', label: 'Total Bricks', value: stats.totalBricks || 847, color: '#D01012' },
-          { icon: '🎨', label: 'Colors', value: stats.totalColors || 12, color: '#7B2D8B' },
-          { icon: '📦', label: 'Sets Owned', value: stats.totalSets || 3, color: '#006DB7' },
+          { icon: '🧱', label: 'Total de Peças', value: stats.totalBricks || 847, color: '#D01012' },
+          { icon: '🎨', label: 'Cores', value: stats.totalColors || 12, color: '#7B2D8B' },
+          { icon: '📦', label: 'Conjuntos', value: stats.totalSets || 3, color: '#006DB7' },
         ].map((stat, i) => (
           <motion.div
             key={stat.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: i * 0.1, type: 'spring' }}
-            className="bg-white rounded-2xl p-4 shadow-md border-2 border-white text-center"
+            className="bg-white rounded-2xl p-3 sm:p-4 shadow-md border-2 border-white text-center"
             style={{ borderColor: `${stat.color}20` }}
           >
-            <div className="text-3xl mb-1">{stat.icon}</div>
-            <div className="text-2xl font-heading" style={{ color: stat.color }}>{stat.value.toLocaleString()}</div>
+            <div className="text-2xl mb-1">{stat.icon}</div>
+            <div className="text-xl sm:text-2xl font-heading" style={{ color: stat.color }}>{stat.value.toLocaleString()}</div>
             <div className="text-xs font-body text-gray-400 font-semibold">{stat.label}</div>
           </motion.div>
         ))}
@@ -67,24 +67,24 @@ export default function BrickBoxPage() {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2 }}
-          className="mb-8"
+          className="mb-6"
         >
-          <h2 className="text-xl font-heading mb-3" style={{ color: '#1A1A2E' }}>Owned Sets</h2>
-          <div className="flex gap-3 overflow-x-auto pb-2">
+          <h2 className="text-lg sm:text-xl font-heading mb-3" style={{ color: '#1A1A2E' }}>Meus Conjuntos</h2>
+          <div className="-mx-4 px-4 flex gap-3 overflow-x-auto pb-2 snap-x snap-mandatory">
             {ownedSets.map((set, i) => (
               <motion.div
                 key={set.setNum}
                 initial={{ opacity: 0, x: 30 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: 0.3 + i * 0.08 }}
-                className="flex-shrink-0 bg-white rounded-2xl p-3 shadow-md border-2 border-white/80 w-44"
+                className="flex-shrink-0 bg-white rounded-2xl p-3 shadow-md border-2 border-white/80 w-40 snap-start"
                 whileHover={{ y: -3, scale: 1.02 }}
               >
-                <div className="w-full h-24 rounded-xl bg-gradient-to-br from-lego-yellow/20 to-lego-blue/20 flex items-center justify-center text-4xl mb-2">
+                <div className="w-full h-20 rounded-xl bg-gradient-to-br from-lego-yellow/20 to-lego-blue/20 flex items-center justify-center text-4xl mb-2">
                   📦
                 </div>
                 <p className="font-heading text-sm leading-tight" style={{ color: '#1A1A2E' }}>{set.name}</p>
-                <p className="text-xs font-body text-gray-400 mt-1">{set.numParts} pieces · {set.year}</p>
+                <p className="text-xs font-body text-gray-400 mt-1">{set.numParts} peças · {set.year}</p>
               </motion.div>
             ))}
           </div>
@@ -93,22 +93,22 @@ export default function BrickBoxPage() {
 
       {/* Main Content Tabs */}
       <Tabs defaultValue="inventory">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-6">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 mb-5">
           <TabsList>
             <TabsTrigger value="inventory" className="gap-2">
               <Layers className="w-4 h-4" />
-              My Bricks
+              Minhas Peças
             </TabsTrigger>
             <TabsTrigger value="search" className="gap-2">
               <Search className="w-4 h-4" />
-              Add Sets
+              Adicionar Conjuntos
             </TabsTrigger>
           </TabsList>
 
-          <div className="flex-1 flex items-center gap-2 sm:max-w-xs">
+          <div className="flex-1 flex items-center gap-2 w-full sm:max-w-xs">
             <SlidersHorizontal className="w-4 h-4 text-gray-400 flex-shrink-0" />
             <Input
-              placeholder="Filter by color..."
+              placeholder="Filtrar por cor..."
               value={colorFilter}
               onChange={(e) => setColorFilter(e.target.value)}
               className="h-10 text-sm"
@@ -121,12 +121,12 @@ export default function BrickBoxPage() {
         </TabsContent>
 
         <TabsContent value="search">
-          <div className="bg-white rounded-3xl p-6 shadow-md border-2 border-white/80">
-            <h2 className="text-xl font-heading mb-2" style={{ color: '#1A1A2E' }}>
-              Find &amp; Add LEGO Sets
+          <div className="bg-white rounded-3xl p-5 shadow-md border-2 border-white/80">
+            <h2 className="text-lg sm:text-xl font-heading mb-2" style={{ color: '#1A1A2E' }}>
+              Buscar &amp; Adicionar Conjuntos LEGO
             </h2>
             <p className="text-sm font-body text-gray-500 mb-5">
-              Search for any LEGO set and add it to your collection. All the pieces will be added to your brick inventory!
+              Procure qualquer conjunto LEGO e adicione à sua coleção. Todas as peças serão adicionadas ao seu inventário!
             </p>
             <SetSearch />
           </div>

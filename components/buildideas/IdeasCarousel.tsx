@@ -27,6 +27,7 @@ export default function IdeasCarousel({ ideas }: IdeasCarouselProps) {
       <button
         onClick={() => scroll('left')}
         className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-lg border-2 border-gray-100 flex items-center justify-center text-gray-600 hover:bg-lego-yellow hover:text-lego-dark hover:border-lego-yellow transition-all"
+        aria-label="Anterior"
       >
         <ChevronLeft className="w-5 h-5" />
       </button>
@@ -34,6 +35,7 @@ export default function IdeasCarousel({ ideas }: IdeasCarouselProps) {
       <button
         onClick={() => scroll('right')}
         className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-4 z-10 w-10 h-10 rounded-full bg-white shadow-lg border-2 border-gray-100 flex items-center justify-center text-gray-600 hover:bg-lego-yellow hover:text-lego-dark hover:border-lego-yellow transition-all"
+        aria-label="Próximo"
       >
         <ChevronRight className="w-5 h-5" />
       </button>
@@ -41,11 +43,11 @@ export default function IdeasCarousel({ ideas }: IdeasCarouselProps) {
       {/* Carousel Track */}
       <div
         ref={scrollRef}
-        className="flex gap-5 overflow-x-auto pb-4 scroll-snap-x px-1"
+        className="flex gap-5 overflow-x-auto pb-4 snap-x snap-mandatory px-1"
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         {ideas.map((idea, index) => (
-          <div key={idea.id} className="flex-shrink-0 w-72 scroll-snap-start">
+          <div key={idea.id} className="flex-shrink-0 w-72 snap-start">
             <IdeaCard idea={idea} index={index} />
           </div>
         ))}

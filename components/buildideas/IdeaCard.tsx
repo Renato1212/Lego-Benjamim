@@ -9,18 +9,24 @@ import { Progress } from '@/components/ui/progress';
 
 const THEME_EMOJIS: Record<string, string> = {
   Space: '🚀',
+  Espaço: '🚀',
   Fantasy: '🏰',
+  Fantasia: '🏰',
   Ocean: '🌊',
+  Oceano: '🌊',
   City: '🏙️',
+  Cidade: '🏙️',
   'Sci-Fi': '🤖',
+  'Ficção Científica': '🤖',
   Nature: '🌿',
+  Natureza: '🌿',
   Medieval: '⚔️',
 };
 
 const DIFF_CONFIG: Record<string, { color: string; label: string; stars: number }> = {
-  easy: { color: '#4D924A', label: 'Easy', stars: 1 },
-  medium: { color: '#FF6B00', label: 'Medium', stars: 2 },
-  hard: { color: '#D01012', label: 'Hard', stars: 3 },
+  easy: { color: '#4D924A', label: 'Fácil', stars: 1 },
+  medium: { color: '#FF6B00', label: 'Médio', stars: 2 },
+  hard: { color: '#D01012', label: 'Difícil', stars: 3 },
 };
 
 interface IdeaCardProps {
@@ -46,7 +52,7 @@ export default function IdeaCard({ idea, index, onExpand }: IdeaCardProps) {
     >
       {/* Card Image Area */}
       <div
-        className="relative h-44 flex items-center justify-center text-7xl overflow-hidden"
+        className="relative h-40 sm:h-44 flex items-center justify-center text-7xl overflow-hidden"
         style={{
           background: `linear-gradient(135deg, ${diffConf.color}15 0%, ${diffConf.color}25 100%)`,
         }}
@@ -73,15 +79,15 @@ export default function IdeaCard({ idea, index, onExpand }: IdeaCardProps) {
       </div>
 
       {/* Card Body */}
-      <div className="p-5">
-        <h3 className="text-xl font-heading mb-2" style={{ color: '#1A1A2E' }}>{idea.title}</h3>
+      <div className="p-4 sm:p-5">
+        <h3 className="text-lg sm:text-xl font-heading mb-2" style={{ color: '#1A1A2E' }}>{idea.title}</h3>
         <p className="text-sm font-body text-gray-500 mb-4 leading-relaxed">{idea.description}</p>
 
         {/* Match Progress */}
         <div className="mb-4">
           <div className="flex items-center justify-between mb-1.5">
             <span className="text-xs font-body font-semibold text-gray-400 flex items-center gap-1">
-              <Target className="w-3 h-3" /> Brick Match
+              <Target className="w-3 h-3" /> Combinação de Peças
             </span>
             <span className="text-xs font-bold font-body" style={{ color: diffConf.color }}>
               {idea.matchPercentage}%
@@ -98,7 +104,7 @@ export default function IdeaCard({ idea, index, onExpand }: IdeaCardProps) {
           </div>
           <div className="flex items-center gap-1 text-xs font-body text-gray-400">
             <Zap className="w-3.5 h-3.5" />
-            ~{idea.estimatedParts} parts
+            ~{idea.estimatedParts} peças
           </div>
           <span className="text-xs font-body">{stars}</span>
         </div>
@@ -119,12 +125,12 @@ export default function IdeaCard({ idea, index, onExpand }: IdeaCardProps) {
         {/* CTA */}
         <Button
           size="sm"
-          className="w-full"
+          className="w-full h-11"
           onClick={(e) => {
             e.stopPropagation();
           }}
         >
-          <span>Let&apos;s Build!</span>
+          <span>Vamos Construir!</span>
           <ChevronRight className="w-4 h-4" />
         </Button>
       </div>

@@ -8,20 +8,20 @@ import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 
 const WEEKLY_CHALLENGE = {
-  title: 'Rainbow Builder Challenge',
-  description: 'Build one creation using at least 7 different colors this week!',
+  title: 'Desafio do Arco-íris',
+  description: 'Construa uma criação usando pelo menos 7 cores diferentes esta semana!',
   xpReward: 500,
   progress: 3,
   total: 7,
-  endsIn: '3 days',
+  endsIn: '3 dias',
   icon: '🌈',
 };
 
 const PAST_QUESTS = [
-  { title: 'First Steps', description: 'Add your first LEGO set', completed: true, xp: 50, icon: '👶' },
-  { title: 'Color Explorer', description: 'Use 5 different brick colors', completed: true, xp: 75, icon: '🎨' },
-  { title: 'Brick Collector', description: 'Own more than 100 bricks', completed: true, xp: 100, icon: '📦' },
-  { title: 'Storyteller', description: 'Generate your first AI story', completed: false, xp: 125, icon: '📖' },
+  { title: 'Primeiros Passos', description: 'Adicione seu primeiro conjunto LEGO', completed: true, xp: 50, icon: '👶' },
+  { title: 'Explorador de Cores', description: 'Use 5 cores diferentes de peças', completed: true, xp: 75, icon: '🎨' },
+  { title: 'Colecionador de Peças', description: 'Tenha mais de 100 peças', completed: true, xp: 100, icon: '📦' },
+  { title: 'Contador de Histórias', description: 'Gere sua primeira história com IA', completed: false, xp: 125, icon: '📖' },
 ];
 
 export default function QuestsPage() {
@@ -32,20 +32,20 @@ export default function QuestsPage() {
   const xpPercent = (user.xp / user.xpToNextLevel) * 100;
 
   return (
-    <div className="min-h-screen px-4 py-8 md:px-8 max-w-6xl mx-auto">
+    <div className="min-h-screen px-4 sm:px-6 py-6 max-w-6xl mx-auto">
       {/* Header */}
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="flex items-center gap-3 mb-8"
+        className="flex items-center gap-3 mb-6"
       >
         <div className="w-12 h-12 rounded-2xl flex items-center justify-center text-2xl shadow-md"
           style={{ background: '#D4F0D3' }}>
           <Star className="w-6 h-6" style={{ color: '#4D924A' }} />
         </div>
         <div>
-          <h1 className="text-4xl font-heading" style={{ color: '#1A1A2E' }}>Brick Quests</h1>
-          <p className="font-body text-gray-500">Complete quests to earn XP and unlock badges!</p>
+          <h1 className="text-2xl sm:text-3xl md:text-4xl font-heading" style={{ color: '#1A1A2E' }}>Missões</h1>
+          <p className="font-body text-gray-500 text-sm">Complete missões para ganhar XP e desbloquear conquistas!</p>
         </div>
       </motion.div>
 
@@ -54,7 +54,7 @@ export default function QuestsPage() {
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         transition={{ delay: 0.2 }}
-        className="rounded-3xl p-6 mb-8 relative overflow-hidden"
+        className="rounded-3xl p-5 mb-6 relative overflow-hidden"
         style={{ background: 'linear-gradient(135deg, #1A1A2E 0%, #2D2D4E 100%)' }}
       >
         <div className="absolute top-4 right-6 text-6xl opacity-20 animate-float select-none">⚡</div>
@@ -62,14 +62,14 @@ export default function QuestsPage() {
         <div className="relative z-10">
           <div className="flex items-center gap-4 mb-4">
             <div
-              className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl font-heading text-lego-dark shadow-lg"
+              className="w-14 h-14 sm:w-16 sm:h-16 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl font-heading text-lego-dark shadow-lg"
               style={{ background: '#FFCC00' }}
             >
               {user.level}
             </div>
             <div>
-              <p className="text-white/60 text-sm font-body font-semibold uppercase tracking-wide">Level {user.level}</p>
-              <h2 className="text-3xl font-heading text-white">{user.levelName}</h2>
+              <p className="text-white/60 text-xs font-body font-semibold uppercase tracking-wide">Nível {user.level}</p>
+              <h2 className="text-2xl sm:text-3xl font-heading text-white">{user.levelName}</h2>
               <p className="text-white/60 text-sm font-body">
                 {user.xp.toLocaleString()} / {user.xpToNextLevel.toLocaleString()} XP
               </p>
@@ -83,36 +83,36 @@ export default function QuestsPage() {
           />
 
           <p className="text-white/50 text-xs font-body mt-2">
-            {(user.xpToNextLevel - user.xp).toLocaleString()} XP until Level {user.level + 1}
+            {(user.xpToNextLevel - user.xp).toLocaleString()} XP até o Nível {user.level + 1}
           </p>
         </div>
       </motion.div>
 
       {/* Daily Quest */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-heading mb-4" style={{ color: '#1A1A2E' }}>
-          🌅 Daily Quest
+      <section className="mb-6">
+        <h2 className="text-xl sm:text-2xl font-heading mb-4" style={{ color: '#1A1A2E' }}>
+          🌅 Missão do Dia
         </h2>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.3 }}
-          className="bg-white rounded-3xl p-6 shadow-lg border-2"
+          className="bg-white rounded-3xl p-5 shadow-lg border-2"
           style={{ borderColor: dailyQuest.isCompleted ? '#4D924A40' : '#FFCC0040' }}
         >
           <div className="flex items-start gap-4">
             <div
-              className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0"
+              className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl flex-shrink-0"
               style={{ background: dailyQuest.isCompleted ? '#4D924A20' : '#FFCC0020' }}
             >
               {dailyQuest.icon}
             </div>
             <div className="flex-1">
               <div className="flex items-center gap-2 mb-1">
-                <h3 className="text-xl font-heading" style={{ color: '#1A1A2E' }}>{dailyQuest.title}</h3>
+                <h3 className="text-lg sm:text-xl font-heading" style={{ color: '#1A1A2E' }}>{dailyQuest.title}</h3>
                 {dailyQuest.isCompleted && (
                   <span className="text-xs px-2 py-0.5 rounded-full font-bold font-body text-white" style={{ background: '#4D924A' }}>
-                    ✓ Done!
+                    ✓ Feito!
                   </span>
                 )}
               </div>
@@ -121,7 +121,7 @@ export default function QuestsPage() {
               <div className="flex items-center gap-3 mb-3">
                 <Zap className="w-4 h-4" style={{ color: '#FFCC00' }} />
                 <span className="text-sm font-bold font-body" style={{ color: '#FF6B00' }}>
-                  +{dailyQuest.xpReward} XP Reward
+                  +{dailyQuest.xpReward} XP de Recompensa
                 </span>
               </div>
 
@@ -133,9 +133,9 @@ export default function QuestsPage() {
             </div>
 
             {!dailyQuest.isCompleted && (
-              <Button onClick={completeQuest} className="flex-shrink-0">
+              <Button onClick={completeQuest} className="flex-shrink-0 h-11">
                 <Zap className="w-4 h-4" />
-                Complete!
+                Completar!
               </Button>
             )}
           </div>
@@ -143,15 +143,15 @@ export default function QuestsPage() {
       </section>
 
       {/* Weekly Challenge */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-heading mb-4" style={{ color: '#1A1A2E' }}>
-          📅 Weekly Challenge
+      <section className="mb-6">
+        <h2 className="text-xl sm:text-2xl font-heading mb-4" style={{ color: '#1A1A2E' }}>
+          📅 Desafio da Semana
         </h2>
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
-          className="rounded-3xl p-6 shadow-lg overflow-hidden relative"
+          className="rounded-3xl p-5 shadow-lg overflow-hidden relative"
           style={{ background: 'linear-gradient(135deg, #006DB7 0%, #0099E5 100%)' }}
         >
           <div className="absolute top-3 right-6 text-6xl opacity-20 animate-float select-none">
@@ -161,10 +161,10 @@ export default function QuestsPage() {
             <div className="flex items-center gap-2 mb-2">
               <Calendar className="w-4 h-4 text-white/70" />
               <span className="text-xs text-white/70 font-body font-semibold">
-                Ends in {WEEKLY_CHALLENGE.endsIn}
+                Termina em {WEEKLY_CHALLENGE.endsIn}
               </span>
             </div>
-            <h3 className="text-2xl font-heading text-white mb-2">{WEEKLY_CHALLENGE.title}</h3>
+            <h3 className="text-xl sm:text-2xl font-heading text-white mb-2">{WEEKLY_CHALLENGE.title}</h3>
             <p className="text-white/80 font-body text-sm mb-4">{WEEKLY_CHALLENGE.description}</p>
 
             <div className="flex items-center gap-3 mb-3">
@@ -172,7 +172,7 @@ export default function QuestsPage() {
                 +{WEEKLY_CHALLENGE.xpReward} XP
               </span>
               <span className="text-white/60 text-sm font-body">
-                · Progress: {WEEKLY_CHALLENGE.progress}/{WEEKLY_CHALLENGE.total} colors
+                · Progresso: {WEEKLY_CHALLENGE.progress}/{WEEKLY_CHALLENGE.total} cores
               </span>
             </div>
 
@@ -186,9 +186,9 @@ export default function QuestsPage() {
       </section>
 
       {/* Past Quests */}
-      <section className="mb-8">
-        <h2 className="text-2xl font-heading mb-4" style={{ color: '#1A1A2E' }}>
-          📋 Quest Log
+      <section className="mb-6">
+        <h2 className="text-xl sm:text-2xl font-heading mb-4" style={{ color: '#1A1A2E' }}>
+          📋 Registro de Missões
         </h2>
         <div className="space-y-3">
           {PAST_QUESTS.map((quest, i) => (
@@ -227,16 +227,16 @@ export default function QuestsPage() {
       </section>
 
       {/* Badges Section */}
-      <section>
-        <h2 className="text-2xl font-heading mb-4" style={{ color: '#1A1A2E' }}>
-          🏆 My Badges
+      <section className="pb-4">
+        <h2 className="text-xl sm:text-2xl font-heading mb-4" style={{ color: '#1A1A2E' }}>
+          🏆 Minhas Conquistas
         </h2>
 
         {/* Earned Badges */}
         {earnedBadges.length > 0 && (
           <div className="mb-4">
-            <p className="text-sm font-body font-semibold text-gray-400 mb-3">Earned ({earnedBadges.length})</p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <p className="text-sm font-body font-semibold text-gray-400 mb-3">Conquistadas ({earnedBadges.length})</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {earnedBadges.map((badge, i) => (
                 <motion.div
                   key={badge.id}
@@ -248,7 +248,7 @@ export default function QuestsPage() {
                   whileHover={{ scale: 1.05, y: -3 }}
                 >
                   <div
-                    className="w-14 h-14 rounded-2xl flex items-center justify-center text-3xl mx-auto mb-2 shadow-sm"
+                    className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl flex items-center justify-center text-2xl sm:text-3xl mx-auto mb-2 shadow-sm"
                     style={{ background: `${badge.color}20` }}
                   >
                     {badge.icon}
@@ -264,8 +264,8 @@ export default function QuestsPage() {
         {/* Locked Badges */}
         {unearnedBadges.length > 0 && (
           <div>
-            <p className="text-sm font-body font-semibold text-gray-400 mb-3">Locked ({unearnedBadges.length})</p>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
+            <p className="text-sm font-body font-semibold text-gray-400 mb-3">Bloqueadas ({unearnedBadges.length})</p>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
               {unearnedBadges.map((badge, i) => (
                 <motion.div
                   key={badge.id}
@@ -274,14 +274,14 @@ export default function QuestsPage() {
                   transition={{ delay: 1.0 + i * 0.08 }}
                   className="bg-gray-50 rounded-2xl p-4 text-center border-2 border-gray-100 opacity-70"
                 >
-                  <div className="w-14 h-14 rounded-2xl bg-gray-200 flex items-center justify-center text-3xl mx-auto mb-2 grayscale">
+                  <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gray-200 flex items-center justify-center text-2xl sm:text-3xl mx-auto mb-2 grayscale">
                     {badge.icon}
                   </div>
                   <p className="font-heading text-sm text-gray-400">{badge.name}</p>
                   <p className="text-xs font-body text-gray-300 mt-1">{badge.description}</p>
                   <div className="mt-2 flex items-center justify-center gap-1 text-xs text-gray-400 font-body">
                     <Lock className="w-3 h-3" />
-                    Locked
+                    Bloqueada
                   </div>
                 </motion.div>
               ))}

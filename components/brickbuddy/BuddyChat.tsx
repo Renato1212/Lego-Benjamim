@@ -16,16 +16,16 @@ interface Message {
 }
 
 const QUICK_PROMPTS = [
-  "What can I build? 🚀",
-  "Give me a challenge! 💪",
-  "How do I make wings? 🦋",
-  "Best colors to mix? 🎨",
+  "O que posso construir? 🚀",
+  "Me dê um desafio! 💪",
+  "Como faço asas? 🦋",
+  "Melhores cores para misturar? 🎨",
 ];
 
 const INITIAL_MESSAGE: Message = {
   id: 'init',
   role: 'assistant',
-  content: "Hey there, Master Builder! 🧱✨ I'm Brix, your Brick Buddy! I'm here to help you build amazing things. What incredible creation are we making today?",
+  content: "Olá, Mestre Construtor! 🧱✨ Sou o Brix, seu Amigo Construtor! Estou aqui para ajudar você a construir coisas incríveis. O que vamos criar hoje?",
   timestamp: new Date(),
 };
 
@@ -55,7 +55,7 @@ export default function BuddyChat() {
     inputRef.current?.focus();
   }, []);
 
-  const sendMessage = async (text: string) => {
+  const sendMessage = useCallback(async (text: string) => {
     if (!text.trim()) return;
 
     const userMessage: Message = {
@@ -117,14 +117,14 @@ export default function BuddyChat() {
         {
           id: genId('buddy-err'),
           role: 'assistant',
-          content: "Oops! My bricks got mixed up! 🧱 Try asking again - I'm ready to help!",
+          content: "Ops! Minhas peças se misturaram! 🧱 Tente perguntar novamente — estou pronto para ajudar!",
           timestamp: new Date(),
         },
       ]);
     } finally {
       setIsTyping(false);
     }
-  };
+  }, [messages]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,7 +133,7 @@ export default function BuddyChat() {
 
   return (
     <motion.div
-      className="fixed bottom-24 right-6 z-50 w-[340px] rounded-3xl bg-white shadow-2xl border-2 border-lego-yellow/30 overflow-hidden"
+      className="fixed bottom-0 left-0 right-0 md:bottom-24 md:right-6 md:left-auto z-50 md:w-[340px] h-[85vh] md:h-auto rounded-t-3xl md:rounded-3xl bg-white shadow-2xl border-2 border-lego-yellow/30 overflow-hidden"
       initial={{ opacity: 0, y: 20, scale: 0.9 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 20, scale: 0.9 }}
@@ -146,16 +146,23 @@ export default function BuddyChat() {
         </div>
         <div>
           <p className="font-heading text-lego-dark text-lg leading-none">Brix</p>
-          <p className="text-xs font-body text-lego-dark/70 font-semibold">Your Brick Buddy</p>
+          <p className="text-xs font-body text-lego-dark/70 font-semibold">Seu Amigo Construtor</p>
         </div>
-        <div className="ml-auto flex items-center gap-1">
+        <div className="ml-auto flex items-center gap-2">
           <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
           <span className="text-xs font-body text-lego-dark/70">Online</span>
+          <button
+            onClick={closeBuddy}
+            className="ml-2 text-lego-dark/50 hover:text-lego-dark text-lg font-bold"
+            aria-label="Fechar chat"
+          >
+            ✕
+          </button>
         </div>
       </div>
 
       {/* Messages */}
-      <div className="h-72 overflow-y-auto p-4 space-y-3 bg-lego-cream/50">
+      <div className="flex-1 overflow-y-auto p-4 space-y-3 bg-lego-cream/50" style={{ height: 'calc(85vh - 180px)', maxHeight: '340px' }}>
         {messages.map((msg) => (
           <motion.div
             key={msg.id}
@@ -228,15 +235,16 @@ export default function BuddyChat() {
           ref={inputRef}
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Ask Brix anything..."
-          className="h-10 text-sm rounded-xl border-gray-200"
+          placeholder="Pergunte ao Brix..."
+          className="h-11 text-sm rounded-xl border-gray-200"
           disabled={isTyping}
         />
         <Button
           type="submit"
           size="icon"
-          className="h-10 w-10 rounded-xl flex-shrink-0"
+          className="h-11 w-11 rounded-xl flex-shrink-0"
           disabled={isTyping || !input.trim()}
+          aria-label="Enviar mensagem"
         >
           <Send className="w-4 h-4" />
         </Button>

@@ -10,13 +10,13 @@ export default function BuddyButton() {
 
   return (
     <>
-      {/* Floating Button */}
+      {/* Botão Flutuante */}
       <motion.button
-        className="fixed bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-lego-yellow border-b-4 border-amber-500 shadow-xl flex items-center justify-center text-2xl cursor-pointer"
+        className="fixed bottom-24 md:bottom-6 right-6 z-50 w-16 h-16 rounded-full bg-lego-yellow border-b-4 border-amber-500 shadow-xl flex items-center justify-center text-2xl cursor-pointer"
         whileHover={{ scale: 1.1, rotate: 5 }}
         whileTap={{ scale: 0.9 }}
         onClick={toggleBuddy}
-        aria-label="Open Brick Buddy chat"
+        aria-label="Abrir chat do Amigo Construtor"
         style={{ boxShadow: '0 8px 32px rgba(255, 204, 0, 0.5)' }}
       >
         <motion.span
@@ -26,7 +26,7 @@ export default function BuddyButton() {
           {isBuddyOpen ? '✕' : '🧱'}
         </motion.span>
 
-        {/* Pulse ring */}
+        {/* Anel de pulso */}
         {!isBuddyOpen && (
           <>
             <motion.span
@@ -43,7 +43,7 @@ export default function BuddyButton() {
         )}
       </motion.button>
 
-      {/* Chat Panel */}
+      {/* Painel do Chat */}
       <AnimatePresence>
         {isBuddyOpen && <BuddyChat />}
       </AnimatePresence>

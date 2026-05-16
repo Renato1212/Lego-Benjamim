@@ -5,18 +5,18 @@ import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 
 const BRICK_COLORS = [
-  { name: 'Red', color: '#D01012', hex: 'C91A09' },
-  { name: 'Blue', color: '#006DB7', hex: '0055BF' },
-  { name: 'Yellow', color: '#FFCC00', hex: 'F2CD37' },
-  { name: 'Green', color: '#4D924A', hex: '237841' },
-  { name: 'Orange', color: '#FF6B00', hex: 'FE8A18' },
-  { name: 'Purple', color: '#7B2D8B', hex: '81007B' },
-  { name: 'White', color: '#F0F0F0', hex: 'FFFFFF' },
-  { name: 'Black', color: '#222222', hex: '05131D' },
-  { name: 'Light Blue', color: '#87CEEB', hex: '9FC3E9' },
-  { name: 'Pink', color: '#FF69B4', hex: 'FF84B7' },
-  { name: 'Lime', color: '#AACE47', hex: 'BBE90B' },
-  { name: 'Dark Red', color: '#8B0000', hex: '720E0F' },
+  { name: 'Vermelho', color: '#D01012', hex: 'C91A09' },
+  { name: 'Azul', color: '#006DB7', hex: '0055BF' },
+  { name: 'Amarelo', color: '#FFCC00', hex: 'F2CD37' },
+  { name: 'Verde', color: '#4D924A', hex: '237841' },
+  { name: 'Laranja', color: '#FF6B00', hex: 'FE8A18' },
+  { name: 'Roxo', color: '#7B2D8B', hex: '81007B' },
+  { name: 'Branco', color: '#F0F0F0', hex: 'FFFFFF' },
+  { name: 'Preto', color: '#222222', hex: '05131D' },
+  { name: 'Azul Claro', color: '#87CEEB', hex: '9FC3E9' },
+  { name: 'Rosa', color: '#FF69B4', hex: 'FF84B7' },
+  { name: 'Verde Limão', color: '#AACE47', hex: 'BBE90B' },
+  { name: 'Vermelho Escuro', color: '#8B0000', hex: '720E0F' },
 ];
 
 const BRICK_SIZES = [
@@ -25,7 +25,7 @@ const BRICK_SIZES = [
   { label: '2×2', value: '2x2', w: 2, h: 1, d: 2 },
   { label: '2×4', value: '2x4', w: 2, h: 1, d: 4 },
   { label: '1×4', value: '1x4', w: 1, h: 1, d: 4 },
-  { label: 'Tall 1×2', value: 't1x2', w: 1, h: 2, d: 2 },
+  { label: 'Alta 1×2', value: 't1x2', w: 1, h: 2, d: 2 },
 ];
 
 interface BrickPaletteProps {
@@ -45,7 +45,7 @@ export default function BrickPalette({
     <div className="bg-white rounded-3xl p-4 shadow-lg border-2 border-white/80 h-full flex flex-col gap-4">
       <div>
         <h3 className="text-sm font-heading mb-3 uppercase tracking-wide" style={{ color: '#1A1A2E' }}>
-          Colors
+          Cores
         </h3>
         <div className="grid grid-cols-4 gap-2">
           {BRICK_COLORS.map((brick, i) => (
@@ -64,9 +64,10 @@ export default function BrickPalette({
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: i * 0.03 }}
               title={brick.name}
+              aria-label={brick.name}
             >
               {selectedColor === brick.color && (
-                <Check className="w-3 h-3" style={{ color: brick.name === 'White' || brick.name === 'Yellow' || brick.name === 'Lime' ? '#1A1A2E' : 'white' }} />
+                <Check className="w-3 h-3" style={{ color: brick.name === 'Branco' || brick.name === 'Amarelo' || brick.name === 'Verde Limão' ? '#1A1A2E' : 'white' }} />
               )}
             </motion.button>
           ))}
@@ -74,13 +75,13 @@ export default function BrickPalette({
 
         {/* Selected Color Label */}
         <p className="text-xs font-body text-gray-400 mt-2 text-center">
-          {BRICK_COLORS.find((b) => b.color === selectedColor)?.name || 'Custom'}
+          {BRICK_COLORS.find((b) => b.color === selectedColor)?.name || 'Personalizado'}
         </p>
       </div>
 
       <div>
         <h3 className="text-sm font-heading mb-3 uppercase tracking-wide" style={{ color: '#1A1A2E' }}>
-          Brick Size
+          Tamanho da Peça
         </h3>
         <div className="grid grid-cols-2 gap-2">
           {BRICK_SIZES.map((size) => (
@@ -104,12 +105,12 @@ export default function BrickPalette({
 
       {/* Legend */}
       <div className="mt-auto pt-4 border-t border-gray-100">
-        <p className="text-xs font-body text-gray-400 font-semibold mb-2">Controls</p>
+        <p className="text-xs font-body text-gray-400 font-semibold mb-2">Controles</p>
         <div className="space-y-1 text-xs font-body text-gray-400">
-          <p>🖱️ Left drag: Rotate</p>
-          <p>🖱️ Right drag: Pan</p>
-          <p>🖱️ Scroll: Zoom</p>
-          <p>Click brick: Select</p>
+          <p>🖱️ Arraste esq: Girar</p>
+          <p>🖱️ Arraste dir: Mover</p>
+          <p>🖱️ Rolar: Zoom</p>
+          <p>Clique peça: Selecionar</p>
         </div>
       </div>
     </div>

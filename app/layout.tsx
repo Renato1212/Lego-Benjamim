@@ -20,9 +20,9 @@ const nunito = Nunito({
 });
 
 export const metadata: Metadata = {
-  title: 'BrickVerse — Your LEGO Universe',
-  description: 'The ultimate LEGO companion app for young builders aged 6-12. Track your bricks, get build ideas, and share your creations!',
-  keywords: ['LEGO', 'kids', 'building', 'creative', 'bricks', 'educational'],
+  title: 'BrickVerse — Seu Universo LEGO',
+  description: 'O aplicativo companheiro de LEGO definitivo para jovens construtores de 6 a 12 anos. Acompanhe suas peças, obtenha ideias de construção e compartilhe suas criações!',
+  keywords: ['LEGO', 'crianças', 'construção', 'criativo', 'peças', 'educativo'],
 };
 
 export default function RootLayout({
@@ -32,22 +32,22 @@ export default function RootLayout({
 }>) {
   return (
     <html
-      lang="en"
+      lang="pt-BR"
       className={`${fredoka.variable} ${nunito.variable} h-full`}
     >
       <body className="min-h-full bg-lego-cream font-body antialiased">
-        {/* Background brick particles */}
+        {/* Partículas de fundo */}
         <BrickParticles />
 
-        {/* Kid navigation */}
+        {/* Navegação */}
         <KidNav />
 
-        {/* Main content area — offset for sidebar on desktop, top nav on mobile */}
-        <main className="relative z-10 md:pl-20 pt-[112px] md:pt-0 min-h-screen">
+        {/* Área de conteúdo principal */}
+        <main className="relative z-10 md:pl-20 pt-[60px] pb-[80px] md:pt-0 md:pb-0 min-h-screen">
           {children}
         </main>
 
-        {/* Brick Buddy floating button */}
+        {/* Botão flutuante do Amigo Construtor */}
         <BuddyButton />
       </body>
     </html>

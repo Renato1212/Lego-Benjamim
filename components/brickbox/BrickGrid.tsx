@@ -29,8 +29,8 @@ export default function BrickGrid({ filter }: BrickGridProps) {
         className="text-center py-20"
       >
         <div className="text-8xl mb-4">📦</div>
-        <h3 className="text-2xl font-heading text-lego-dark mb-2">Your Brick Box is Empty!</h3>
-        <p className="text-gray-500 font-body">Search for a LEGO set above to start adding bricks to your collection.</p>
+        <h3 className="text-2xl font-heading text-lego-dark mb-2">Sua Caixinha está Vazia!</h3>
+        <p className="text-gray-500 font-body">Busque um conjunto LEGO acima para começar a adicionar peças à sua coleção.</p>
       </motion.div>
     );
   }
@@ -40,7 +40,7 @@ export default function BrickGrid({ filter }: BrickGridProps) {
   if (colorEntries.length === 0) {
     return (
       <div className="text-center py-10">
-        <p className="text-gray-500 font-body text-lg">No bricks matching &quot;{filter}&quot;</p>
+        <p className="text-gray-500 font-body text-lg">Nenhuma peça com a cor &quot;{filter}&quot;</p>
       </div>
     );
   }
@@ -71,7 +71,7 @@ export default function BrickGrid({ filter }: BrickGridProps) {
                 <h3 className="text-lg font-heading text-lego-dark">{colorName}</h3>
                 <div className="h-px flex-1 bg-gray-200" />
                 <span className="text-sm font-body font-bold text-gray-400">
-                  {totalQty} bricks · {bricks.length} types
+                  {totalQty} peças · {bricks.length} tipos
                 </span>
               </div>
 
