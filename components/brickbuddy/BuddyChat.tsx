@@ -6,7 +6,7 @@ import { Send, Sparkles } from 'lucide-react';
 import { useAppStore } from '@/lib/store/app';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { DEMO_BUDDY_RESPONSES } from '@/lib/ai/claude';
+import { DEMO_BUDDY_RESPONSES } from '@/lib/ai/demo-responses';
 
 interface Message {
   id: string;
