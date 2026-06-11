@@ -6,78 +6,69 @@ A **Aloja** é um micro SaaS que automatiza as obrigações legais dos anfitriõ
 
 Quem gere um AL em Portugal tem três obrigações recorrentes, cada uma com coimas associadas:
 
-1. **Comunicação AIMA** — cada hóspede estrangeiro tem de ser comunicado no prazo de 3 dias úteis (coima até €2.000 por hóspede)
+1. **Comunicação AIMA/SIBA** — cada hóspede estrangeiro tem de ser comunicado no prazo de 3 dias úteis (coima até €2.000 por hóspede)
 2. **Taxa turística municipal** — regras diferentes em cada município (tarifas, limites de noites, isenções de menores), com entrega mensal
 3. **Inquérito INE** — estatísticas mensais obrigatórias, mesmo sem hóspedes
 
 ## A solução
 
-- **Boletins de alojamento automáticos** — gerados e acompanhados a partir das reservas, com alertas antes de cada prazo
-- **Taxa turística por município** — Lisboa (€4/noite, máx. 7), Porto (€3/noite, máx. 7), Cascais (€2/noite), Albufeira (€2 época alta / €1 época baixa), menores de 13 anos isentos; guia de pagamento mensal num clique
+- **Boletins de alojamento reais** — registo de hóspedes e submissão direta ao webservice SIBA (AIMA), com fallback de download do XML oficial para submissão manual em [siba.sef.pt](https://siba.sef.pt)
+- **Taxa turística por município** — Lisboa (€4/noite, máx. 7), Porto (€3/noite, máx. 7), Cascais (€2/noite), Albufeira (€2 época alta / €1 época baixa), menores de 13 anos isentos
 - **Relatórios INE pré-preenchidos** — dormidas, hóspedes, mercados de origem e estadia média calculados automaticamente
-- **Check-in digital do hóspede** — recolha dos dados obrigatórios (nome, documento, nacionalidade, datas) no telemóvel do hóspede
-- **Sincronização iCal** — Airbnb e Booking.com sem inserção manual de reservas
+- **Feedback integrado** — botão flutuante em todas as páginas para os beta testers reportarem problemas e sugestões
 
-## Planos
+## Áreas da aplicação
 
-| Plano | Preço | Inclui |
+| Rota | O que é | Acesso |
 | --- | --- | --- |
-| Anfitrião | €29/mês | 1 propriedade, boletins ilimitados, taxa turística, INE |
-| Profissional | €59/mês | Até 5 propriedades, multi-calendário, faturação, SMS |
-| Agência | €149/mês | Propriedades ilimitadas, API, gestor de conta dedicado |
-
-Todos os planos com 14 dias grátis, sem cartão de crédito.
+| `/` e `/precos` | Landing page e preços | Público |
+| `/demo/*` | Produto com dados fictícios (para mostrar a potenciais clientes) | Público |
+| `/registar` e `/entrar` | Criação de conta e início de sessão | Público |
+| `/app/*` | Produto real: painel, hóspedes, boletins SIBA, taxa, propriedades | Requer sessão |
 
 ## Stack técnica
 
 - [Next.js 16](https://nextjs.org) (App Router, Turbopack) + TypeScript estrito
-- Tailwind CSS v4 (`@theme inline`)
-- framer-motion (animações subtis) · lucide-react (ícones) · Inter (next/font)
+- Auth.js v5 (sessões JWT, palavra-passe com bcrypt)
+- Prisma 7 + PostgreSQL (driver adapter `@prisma/adapter-pg`)
+- Integração SIBA/AIMA via SOAP 1.1 (homologação e produção)
+- Tailwind CSS v4 · framer-motion · lucide-react · Inter (next/font)
 
-## Como executar
+## Como executar localmente
 
 ```bash
+cp .env.example .env.local   # preencher DATABASE_URL e AUTH_SECRET
 npm install
-npm run dev      # desenvolvimento — http://localhost:3000
-npm run build    # build de produção
-npm start        # servir a build
-```
-
-## Estrutura
-
-```
-app/
-  page.tsx              # landing page
-  precos/               # página de preços com comparação detalhada
-  demo/                 # produto em modo demonstração (sem login)
-    page.tsx            # painel de conformidade
-    hospedes/           # registo de hóspedes e estado dos boletins
-    taxa/               # cálculo da taxa turística por município
-    relatorios/         # relatórios INE pré-preenchidos
-    propriedades/       # propriedades e sincronização de calendários
-    definicoes/         # perfil, notificações e faturação
-  api/
-    guests/route.ts     # GET lista / POST registo (mock)
-    tax/route.ts        # GET cálculo da taxa por município (mock)
-components/
-  landing/              # secções da landing page
-  dashboard/            # componentes do painel
-  ui/                   # primitivas (Button, Card, Badge, Input, Modal)
-lib/
-  mock-data.ts          # dados fictícios do modo demonstração
-  tax-rules.ts          # regras da taxa turística por município
+npx prisma db push           # cria o esquema na base de dados
+npm run dev                  # http://localhost:3000
 ```
 
 ## Variáveis de ambiente
 
 | Variável | Descrição |
 | --- | --- |
-| `NEXT_PUBLIC_DEMO_MODE` | `true` — toda a aplicação funciona com dados fictícios, sem APIs externas |
+| `DATABASE_URL` | PostgreSQL (Neon, Supabase, Prisma Postgres, …) |
+| `AUTH_SECRET` | Segredo das sessões — gerar com `openssl rand -hex 32` |
+| `SIBA_ENV` | `test` (homologação, predefinido) ou `production` |
+| `NEXT_PUBLIC_DEMO_MODE` | `true` — ativa o modo demonstração em `/demo` |
 
-## Deployment
+## Deployment (Vercel)
 
-Pronta para a Vercel (`vercel.json` incluído). Basta importar o repositório — não são necessárias chaves nem serviços externos no modo demonstração.
+O `vercel.json` trata de tudo no build (`prisma generate` + `prisma db push` + `next build`). Passos:
 
----
+1. Importar o repositório na Vercel
+2. Em **Settings → Environment Variables**, adicionar `DATABASE_URL`, `AUTH_SECRET` e `SIBA_ENV`
+3. Em **Settings → Deployment Protection**, desativar a **Vercel Authentication** (caso contrário os visitantes recebem um erro 403)
+4. Redeploy
 
-© 2026 Aloja · Feito em Portugal 🇵🇹 · A Aloja não presta aconselhamento jurídico.
+## Guia de testes SIBA (homologação)
+
+Com `SIBA_ENV=test`, as submissões vão para o ambiente de homologação da AIMA (`siba.sef.pt/bawsdev`) — pode testar à vontade sem comunicar dados reais. Para ativar:
+
+1. Registar a unidade hoteleira em [siba.sef.pt](https://siba.sef.pt) e pedir acesso por webservice
+2. Em **Propriedades**, preencher a unidade hoteleira, o estabelecimento e a chave de acesso
+3. Registar um hóspede e carregar em **Submeter ao SIBA**
+
+Sem credenciais SIBA, o botão **Descarregar XML** gera o ficheiro oficial `Movimento_BAL` para submissão manual.
+
+Quando a integração estiver validada com a AIMA, mude `SIBA_ENV` para `production`.

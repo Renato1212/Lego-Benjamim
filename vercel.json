@@ -1,9 +1,10 @@
 {
   "framework": "nextjs",
-  "buildCommand": "prisma generate && prisma db push --skip-generate && next build",
+  "buildCommand": "prisma generate && (prisma db push --skip-generate || echo 'db push ignorado — DATABASE_URL não configurado') && next build",
   "devCommand": "npm run dev",
   "installCommand": "npm install",
   "outputDirectory": ".next",
+  "regions": ["fra1"],
   "build": {
     "env": {
       "NEXT_PUBLIC_DEMO_MODE": "true"
