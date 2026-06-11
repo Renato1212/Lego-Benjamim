@@ -1,0 +1,103 @@
+// Esquema da base de dados da Aloja (PostgreSQL)
+// A connection string é definida em prisma.config.ts (DATABASE_URL).
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Plan {
+  TRIAL
+  ANFITRIAO
+  PROFISSIONAL
+  AGENCIA
+}
+
+enum DocumentType {
+  PASSAPORTE
+  BI
+  CC
+  OUTRO
+}
+
+enum BoletimStatus {
+  PENDENTE
+  SUBMETIDO
+  ERRO
+  MANUAL
+}
+
+model User {
+  id           String     @id @default(cuid())
+  email        String     @unique
+  passwordHash String
+  name         String
+  phone        String?
+  plan         Plan       @default(TRIAL)
+  trialEndsAt  DateTime
+  createdAt    DateTime   @default(now())
+  properties   Property[]
+  feedback     Feedback[]
+}
+
+model Property {
+  id                  String   @id @default(cuid())
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name                String
+  alNumber            String
+  municipality        String
+  address             String
+  sibaUnidade         String?
+  sibaEstabelecimento String?
+  sibaChaveAcesso     String?
+  createdAt           DateTime @default(now())
+  guests              Guest[]
+
+  @@index([userId])
+}
+
+model Guest {
+  id               String       @id @default(cuid())
+  propertyId       String
+  property         Property     @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  firstName        String
+  lastName         String
+  documentType     DocumentType
+  documentNumber   String
+  documentCountry  String       @db.Char(3)
+  nationality      String       @db.Char(3)
+  birthDate        DateTime
+  residenceCountry String       @db.Char(3)
+  residencePlace   String?
+  checkIn          DateTime
+  checkOut         DateTime
+  createdAt        DateTime     @default(now())
+  boletim          Boletim?
+
+  @@index([propertyId])
+}
+
+model Boletim {
+  id           String        @id @default(cuid())
+  guestId      String        @unique
+  guest        Guest         @relation(fields: [guestId], references: [id], onDelete: Cascade)
+  status       BoletimStatus @default(PENDENTE)
+  submittedAt  DateTime?
+  sibaResponse String?
+  errorMessage String?
+  createdAt    DateTime      @default(now())
+}
+
+model Feedback {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  email     String?
+  message   String
+  page      String?
+  createdAt DateTime @default(now())
+}
