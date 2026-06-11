@@ -49,9 +49,10 @@ jobs:
       - name: Criar base de dados
         id: createdb
         run: |
-          RESP=$(curl -fsS -X POST https://create-db-temp.prisma.io/create \
+          NAME=$(date -u +"%Y-%m-%dT%H:%M:%S.000Z")
+          RESP=$(curl -sS -X POST https://create-db-temp.prisma.io/create \
             -H "Content-Type: application/json" \
-            -d "{\"region\":\"${{ steps.region.outputs.region }}\",\"name\":\"aloja-beta\",\"utm_source\":\"aloja-setup\",\"userAgent\":\"aloja-setup\",\"source\":\"cli\",\"ttlMs\":2592000000}")
+            -d "{\"region\":\"${{ steps.region.outputs.region }}\",\"name\":\"$NAME\",\"utm_source\":\"create-db\",\"userAgent\":\"create-db\",\"source\":\"cli\"}")
           echo "$RESP" > /tmp/createdb.json
           node -e '
             const fs = require("fs");
