@@ -7,6 +7,9 @@ name: setup-db
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - ".github/db-setup-trigger"
 
 jobs:
   provision:
